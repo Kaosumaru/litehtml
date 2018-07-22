@@ -1,16 +1,12 @@
 #include "html.h"
 #include "utf8_strings.h"
-
+#include <codecvt>
 
 litehtml::utf8_to_wchar::utf8_to_wchar(const char* val)
 {
+	static std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	m_utf8 = (const byte*) val;
-	while (true)
-	{
-		ucode_t wch = get_char();
-		if (!wch) break;
-		m_str += wch;
-	}
+	m_str = converter.from_bytes((const char*)m_utf8);
 }
 
 litehtml::ucode_t litehtml::utf8_to_wchar::get_char()
