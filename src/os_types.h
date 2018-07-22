@@ -2,6 +2,7 @@
 
 namespace litehtml
 {
+#define LITEHTML_UTF8
 #if defined( WIN32 ) || defined( WINCE )
 
 #ifndef LITEHTML_UTF8
