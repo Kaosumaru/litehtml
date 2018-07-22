@@ -59,35 +59,6 @@ litehtml::ucode_t litehtml::utf8_to_wchar::get_char()
 
 litehtml::wchar_to_utf8::wchar_to_utf8(const wchar_t* val)
 {
-	unsigned int code;
-	for (int i = 0; val[i]; i++)
-	{
-		code = val[i];
-		if (code <= 0x7F)
-		{
-			m_str += (char)code;
-		}
-		else if (code <= 0x7FF)
-		{
-			m_str += (code >> 6) + 192;
-			m_str += (code & 63) + 128;
-		}
-		else if (0xd800 <= code && code <= 0xdfff)
-		{
-			//invalid block of utf8
-		}
-		else if (code <= 0xFFFF)
-		{
-			m_str += (code >> 12) + 224;
-			m_str += ((code >> 6) & 63) + 128;
-			m_str += (code & 63) + 128;
-		}
-		else if (code <= 0x10FFFF)
-		{
-			m_str += (code >> 18) + 240;
-			m_str += ((code >> 12) & 63) + 128;
-			m_str += ((code >> 6) & 63) + 128;
-			m_str += (code & 63) + 128;
-		}
-	}
+	static std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	m_str = converter.to_bytes(val);
 }
